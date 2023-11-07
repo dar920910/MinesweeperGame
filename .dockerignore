@@ -1,0 +1,15 @@
+**/.git
+
+**/.dockerignore
+**/.gitignore
+
+**/.vs
+**/.vscode
+MinesweeperGame.code-workspace
+
+Minesweeper.Postman/
+Minesweeper.Swagger/
+
+**/bin
+**/obj
+**/Dockerfile*

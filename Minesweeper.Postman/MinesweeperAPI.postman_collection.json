@@ -1,0 +1,50 @@
+{
+	"info": {
+		"_postman_id": "22ea7e97-a28e-4901-84c4-4662c90a4b01",
+		"name": "MinesweeperAPI",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "10218317"
+	},
+	"item": [
+		{
+			"name": "Minesweeper - Start a New Game",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:5002/minesweeper/new",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "5002",
+					"path": [
+						"minesweeper",
+						"new"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Minesweeper - Make a Turn",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:5002/minesweeper/turn",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "5002",
+					"path": [
+						"minesweeper",
+						"turn"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
