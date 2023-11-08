@@ -10,6 +10,8 @@ namespace Minesweeper.GameLibrary;
 public class GameParty
 {
     private readonly MineField gameMineField;
+    private readonly ushort summaryEmptyCellsCount;
+    private ushort detectedEmptyCellsCount;
 
     /// <summary>
     /// Инициализирует экземпляр класса <see cref="GameParty"/> с помощью объекта минного поля.
@@ -18,6 +20,11 @@ public class GameParty
     public GameParty(MineField field)
     {
         this.gameMineField = field;
+        this.summaryEmptyCellsCount = CalculateSummaryEmptyCellsCount(field);
+
+        this.detectedEmptyCellsCount = 0;
+
+        this.IsGameOver = false;
     }
 
     /// <summary>
@@ -38,7 +45,22 @@ public class GameParty
         }
         else
         {
-            this.IsGameOver = false;
+            this.detectedEmptyCellsCount++;
+
+            if (this.detectedEmptyCellsCount == this.summaryEmptyCellsCount)
+            {
+                this.IsGameOver = true;
+            }
+            else
+            {
+                this.IsGameOver = false;
+            }
         }
+    }
+
+    private static ushort CalculateSummaryEmptyCellsCount(MineField field)
+    {
+        ushort summaryCellsCount = Convert.ToUInt16(field.Size.Height * field.Size.Width);
+        return Convert.ToUInt16(summaryCellsCount - field.MinesCount);
     }
 }
