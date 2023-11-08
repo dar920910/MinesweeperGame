@@ -25,6 +25,24 @@ public class GamePartyTest
     }
 
     /// <summary>
+    /// Тестирует возможность продолжения игровой партии в результате попадания игрока в пустую (не заминированную) ячейку поля.
+    /// </summary>
+    /// <param name="customCellRow">Номер строки ячейки, выбранной игроком на минном поле.</param>
+    /// <param name="customCellCol">Номер столбца ячейки, выбранной игроком на минном поле.</param>
+    [Theory]
+    [InlineData(0, 0)]
+    [InlineData(0, 2)]
+    [InlineData(1, 1)]
+    [InlineData(2, 0)]
+    [InlineData(2, 2)]
+    public void CheckGameContinueStatusAfterSuccessfulTurn(byte customCellRow, byte customCellCol)
+    {
+        GameParty game = new (TestMineField);
+        game.MakeTurn(customCellRow, customCellCol);
+        Assert.False(game.IsGameOver);
+    }
+
+    /// <summary>
     /// Тестирует завершение игровой партии в результате попадания игрока на мину.
     /// </summary>
     /// <param name="customCellRow">Номер строки ячейки, выбранной игроком на минном поле.</param>
