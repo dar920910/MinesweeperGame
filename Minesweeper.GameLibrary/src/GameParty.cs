@@ -9,7 +9,6 @@ namespace Minesweeper.GameLibrary;
 /// </summary>
 public class GameParty
 {
-    private readonly MineField gameMineField;
     private readonly ushort summaryEmptyCellsCount;
     private ushort detectedEmptyCellsCount;
 
@@ -19,13 +18,24 @@ public class GameParty
     /// <param name="field">Объект минного поля для текущей игровой партии.</param>
     public GameParty(MineField field)
     {
-        this.gameMineField = field;
-        this.summaryEmptyCellsCount = CalculateSummaryEmptyCellsCount(field);
+        this.ID = Guid.NewGuid();
+        this.CurrentMineField = field;
 
+        this.summaryEmptyCellsCount = CalculateSummaryEmptyCellsCount(field);
         this.detectedEmptyCellsCount = 0;
 
         this.IsGameOver = false;
     }
+
+    /// <summary>
+    /// Получает глобальный уникальный идентификатор для текущей игровой партии.
+    /// </summary>
+    public Guid ID { get; }
+
+    /// <summary>
+    /// Получает текущий экземпляр минного поля для данной игровой партии.
+    /// </summary>
+    public MineField CurrentMineField { get; }
 
     /// <summary>
     /// Получает значение, отражающее статус завершения текущей игровой партии.
@@ -39,7 +49,7 @@ public class GameParty
     /// <param name="customCellCol">Номер столбца ячейки, выбранной игроком на минном поле.</param>
     public void MakeTurn(byte customCellRow, byte customCellCol)
     {
-        if (this.gameMineField.IsExplosiveFieldCell(customCellRow, customCellCol))
+        if (this.CurrentMineField.IsExplosiveFieldCell(customCellRow, customCellCol))
         {
             this.IsGameOver = true;
         }
