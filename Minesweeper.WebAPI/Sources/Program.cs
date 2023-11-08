@@ -1,4 +1,8 @@
-var builder = WebApplication.CreateBuilder(args);
+// <copyright file="Program.cs" company="Minesweeper Game Project">
+// Copyright (c) Minesweeper Game Project. All rights reserved.
+// </copyright>
+
+WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();

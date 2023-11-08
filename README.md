@@ -8,9 +8,13 @@ This project is my implementation of the "Minesweeper" game.
 
 todo
 
-## Implememntation
+## Implementation
 
-todo
+### About Projects
+
+- Minesweeper.GameLibrary
+- Minesweeper.GameLibrary.UnitTests
+- Minesweeper.WebAPI
 
 ---
 

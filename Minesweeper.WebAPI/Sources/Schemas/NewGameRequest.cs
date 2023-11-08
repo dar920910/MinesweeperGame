@@ -7,10 +7,10 @@ namespace Minesweeper.WebAPI.Schemas;
 /// <summary>
 /// Представляет тело HTTP-запроса с информацией о новой игровой партии.
 /// </summary>
-internal readonly struct NewGameRequest
+internal record NewGameRequest
 {
     /// <summary>
-    /// Инициализирует экземпляр структуры <see cref="NewGameRequest"/>.
+    /// Инициализирует экземпляр записи типа <see cref="NewGameRequest"/>.
     /// </summary>
     /// <param name="width">Ширина минного поля в количестве ячеек.</param>
     /// <param name="height">Высота минного поля в количестве ячеек.</param>
@@ -35,5 +35,5 @@ internal readonly struct NewGameRequest
     /// <summary>
     /// Представляет параметр тела запроса для количества заминированных ячеек в минном поле.
     /// </summary>
-    internal int Mines_Count { get; }
+    internal ushort Mines_Count { get; }
 }

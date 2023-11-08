@@ -9,8 +9,15 @@ namespace Minesweeper.GameLibrary;
 /// </summary>
 public class GameParty
 {
+    private static readonly Dictionary<string, GameParty> GamesHistory;
+
     private readonly ushort summaryEmptyCellsCount;
     private ushort detectedEmptyCellsCount;
+
+    static GameParty()
+    {
+        GamesHistory = new Dictionary<string, GameParty>();
+    }
 
     /// <summary>
     /// Инициализирует экземпляр класса <see cref="GameParty"/> с помощью объекта минного поля.
@@ -25,6 +32,8 @@ public class GameParty
         this.detectedEmptyCellsCount = 0;
 
         this.IsGameOver = false;
+
+        GamesHistory.Add(this.ID.ToString(), this);
     }
 
     /// <summary>
@@ -41,6 +50,24 @@ public class GameParty
     /// Получает значение, отражающее статус завершения текущей игровой партии.
     /// </summary>
     public bool IsGameOver { get; private set; }
+
+    /// <summary>
+    /// Получает сведения об игровой партии из глобальной истории игры по указанному идентификатору.
+    /// </summary>
+    /// <param name="gamePartyID">Идентификатор игровой партии.</param>
+    /// <returns>Объект игровой партии, соответствующий указанному идентификатору.</returns>
+    public static GameParty GetGamePartyByID(string gamePartyID)
+    {
+        if (GamesHistory.ContainsKey(gamePartyID))
+        {
+            return GamesHistory[gamePartyID];
+        }
+        else
+        {
+            throw new GamePartyNotFoundException(
+                "Игровая партия с указанным идентификатором не найдена в глобальной истории игры !");
+        }
+    }
 
     /// <summary>
     /// Сделать игровой ход с помощью указания координат ячейки минного поля.
@@ -72,5 +99,20 @@ public class GameParty
     {
         ushort summaryCellsCount = Convert.ToUInt16(field.Size.Height * field.Size.Width);
         return Convert.ToUInt16(summaryCellsCount - field.MinesCount);
+    }
+}
+
+/// <summary>
+/// Определяет исключительную ситуацию для отсутствия игровой партии в глобальной истории игры.
+/// </summary>
+public class GamePartyNotFoundException : Exception
+{
+    /// <summary>
+    /// Инициализирует экземпляр класса исключения <see cref="GamePartyNotFoundException"/>.
+    /// </summary>
+    /// <param name="message">Сообщение об ошибке.</param>
+    public GamePartyNotFoundException(string message)
+        : base(message)
+    {
     }
 }

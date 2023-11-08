@@ -1,5 +1,8 @@
 ﻿[*.cs]
 
+# SA1516: Elements must be separated by blank line
+dotnet_diagnostic.SA1516.severity = none
+
 # SA1623: Property summary documentation must match accessors
 dotnet_diagnostic.SA1623.severity = none
 
