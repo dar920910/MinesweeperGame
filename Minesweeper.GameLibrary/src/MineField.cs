@@ -76,7 +76,7 @@ public class MineField
     /// <returns>Значение true, если в указанной ячейке расположена мина, в противном случае false.</returns>
     public bool IsExplosiveFieldCell(byte cellRow, byte cellCol)
     {
-        if (cellCol < this.Size.Width && cellCol < this.Size.Height)
+        if (cellCol < this.Size.Width && cellRow < this.Size.Height)
         {
             return this.mines[cellRow, cellCol];
         }
@@ -86,6 +86,121 @@ public class MineField
                 "Невозможно выбрать ячейку с некорректным значением индекса строки и/или столбца !");
         }
     }
+
+    /// <summary>
+    /// Получает количество заминированных соседних ячеек вокруг выбранной ячейки минного поля.
+    /// </summary>
+    /// <param name="cellRow">Номер строки ячейки минного поля.</param>
+    /// <param name="cellCol">Номер столбца ячейки минного поля.</param>
+    /// <returns>Количество мин, расположенных в соседних ячейках вокруг указанной ячейки.</returns>
+    public byte GetNeighboursMinesCountAroundFieldCell(byte cellRow, byte cellCol)
+    {
+        if (cellCol < this.Size.Width && cellRow < this.Size.Height)
+        {
+            FieldCellNeighboursInfo neighboursInfo = this.GetNeighboursInfoAroundFieldCell(cellRow, cellCol);
+
+            byte minesCountAroundFieldCell = 0;
+
+            if (neighboursInfo.HasNeighbourOnTop)
+            {
+                byte neighbourRow = (byte)(cellRow - 1);
+
+                if (this.mines[neighbourRow, cellCol])
+                {
+                    minesCountAroundFieldCell++;
+                }
+            }
+
+            if (neighboursInfo.HasNeighbourOnTopToRight)
+            {
+                byte neighbourRow = (byte)(cellRow - 1);
+                byte neighbourColumn = (byte)(cellCol + 1);
+
+                if (this.mines[neighbourRow, neighbourColumn])
+                {
+                    minesCountAroundFieldCell++;
+                }
+            }
+
+            if (neighboursInfo.HasNeighbourToRight)
+            {
+                byte neighbourColumn = (byte)(cellCol + 1);
+
+                if (this.mines[cellRow, neighbourColumn])
+                {
+                    minesCountAroundFieldCell++;
+                }
+            }
+
+            if (neighboursInfo.HasNeighbourOnBottomToRight)
+            {
+                byte neighbourRow = (byte)(cellRow + 1);
+                byte neighbourColumn = (byte)(cellCol + 1);
+
+                if (this.mines[neighbourRow, neighbourColumn])
+                {
+                    minesCountAroundFieldCell++;
+                }
+            }
+
+            if (neighboursInfo.HasNeighbourOnBottom)
+            {
+                byte neighbourRow = (byte)(cellRow + 1);
+
+                if (this.mines[neighbourRow, cellCol])
+                {
+                    minesCountAroundFieldCell++;
+                }
+            }
+
+            if (neighboursInfo.HasNeighbourOnBottomToLeft)
+            {
+                byte neighbourRow = (byte)(cellRow + 1);
+                byte neighbourColumn = (byte)(cellCol - 1);
+
+                if (this.mines[neighbourRow, neighbourColumn])
+                {
+                    minesCountAroundFieldCell++;
+                }
+            }
+
+            if (neighboursInfo.HasNeighbourToLeft)
+            {
+                byte neighbourColumn = (byte)(cellCol - 1);
+
+                if (this.mines[cellRow, neighbourColumn])
+                {
+                    minesCountAroundFieldCell++;
+                }
+            }
+
+            if (neighboursInfo.HasNeighbourOnTopToLeft)
+            {
+                byte neighbourRow = (byte)(cellRow - 1);
+                byte neighbourColumn = (byte)(cellCol - 1);
+
+                if (this.mines[neighbourRow, neighbourColumn])
+                {
+                    minesCountAroundFieldCell++;
+                }
+            }
+
+            return minesCountAroundFieldCell;
+        }
+        else
+        {
+            throw new InvalidFieldCellException(
+                "Невозможно выбрать ячейку с некорректным значением индекса строки и/или столбца !");
+        }
+    }
+
+    private static bool IsOnLeftArrayBound(byte columnIndex) => columnIndex == 0;
+
+    private static bool IsOnTopArrayBound(byte rowIndex) => rowIndex == 0;
+
+    private static bool IsOnRightArrayBound(byte columnIndex, byte columns) => columnIndex == (columns - 1);
+
+    private static bool IsOnBottomArrayBound(byte rowIndex, byte rows) => rowIndex == (rows - 1);
 
     private static bool[,] CreateMines(MineFieldSize fieldSize, ushort minesCount)
     {
@@ -130,6 +245,41 @@ public class MineField
         }
 
         return minesCount;
+    }
+
+    private FieldCellNeighboursInfo GetNeighboursInfoAroundFieldCell(byte cellRow, byte cellCol)
+    {
+        FieldCellNeighboursInfo neighboursInfo = new ();
+
+        if (IsOnLeftArrayBound(cellCol))
+        {
+            neighboursInfo.HasNeighbourOnBottomToLeft = false;
+            neighboursInfo.HasNeighbourToLeft = false;
+            neighboursInfo.HasNeighbourOnTopToLeft = false;
+        }
+
+        if (IsOnTopArrayBound(cellRow))
+        {
+            neighboursInfo.HasNeighbourOnTopToLeft = false;
+            neighboursInfo.HasNeighbourOnTop = false;
+            neighboursInfo.HasNeighbourOnTopToRight = false;
+        }
+
+        if (IsOnRightArrayBound(cellCol, this.Size.Width))
+        {
+            neighboursInfo.HasNeighbourOnTopToRight = false;
+            neighboursInfo.HasNeighbourToRight = false;
+            neighboursInfo.HasNeighbourOnBottomToRight = false;
+        }
+
+        if (IsOnBottomArrayBound(cellRow, this.Size.Height))
+        {
+            neighboursInfo.HasNeighbourOnBottomToRight = false;
+            neighboursInfo.HasNeighbourOnBottom = false;
+            neighboursInfo.HasNeighbourOnBottomToLeft = false;
+        }
+
+        return neighboursInfo;
     }
 
     private string[,] GetAllFieldCellsAsHiddenElements()
