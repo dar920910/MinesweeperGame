@@ -10,7 +10,7 @@ using Minesweeper.GameLibrary;
 /// <summary>
 /// Тестовый класс, который содержит модульные тесты для проверки функциональности класса <see cref="MineField"/>.
 /// </summary>
-public class MineFieldTest
+public partial class MineFieldTest
 {
     /// <summary>
     /// Тестирует выброс исключения <see cref="InvalidMinesCountException"/>
