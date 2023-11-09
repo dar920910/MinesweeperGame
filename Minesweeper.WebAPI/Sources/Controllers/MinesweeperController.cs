@@ -21,7 +21,7 @@ public class MinesweeperController : ControllerBase
     /// Инициалирует экземпляр класса контроллера <see cref="MinesweeperController"/>.
     /// </summary>
     /// <param name="logger">Внедренная зависимость для устройства журналирования.</param>
-    internal MinesweeperController(ILogger<MinesweeperController> logger)
+    public MinesweeperController(ILogger<MinesweeperController> logger)
     {
         this.logger = logger;
     }
@@ -33,13 +33,19 @@ public class MinesweeperController : ControllerBase
     /// <returns>Результат выполнения запроса, содержащий тело ответа с информацией о новой игровой партии.</returns>
     [HttpPost("new")]
     [ProducesResponseType(200, Type = typeof(GameInfoResponse))]
-    internal GameInfoResponse StartNewGame([FromBody] NewGameRequest newGameRequest)
+    [ProducesResponseType(400, Type = typeof(BadRequestResult))]
+    public IActionResult StartNewGame([FromBody] NewGameRequest newGameRequest)
     {
+        if (newGameRequest == null)
+        {
+            return this.BadRequest();
+        }
+
         MineFieldSize mineFieldSize = new (newGameRequest.Width, newGameRequest.Height);
         MineField mineField = new (mineFieldSize, newGameRequest.Mines_Count);
         GameParty gameParty = new (mineField);
 
-        return new GameInfoResponse(gameParty);
+        return this.Ok(new GameInfoResponse(gameParty));
     }
 
     /// <summary>

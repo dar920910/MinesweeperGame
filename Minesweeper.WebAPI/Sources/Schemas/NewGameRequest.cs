@@ -7,15 +7,22 @@ namespace Minesweeper.WebAPI.Schemas;
 /// <summary>
 /// Представляет тело HTTP-запроса с информацией о новой игровой партии.
 /// </summary>
-internal record NewGameRequest
+public record NewGameRequest
 {
+    /// <summary>
+    /// Инициализирует экземпляр записи типа <see cref="NewGameRequest"/> (по умолчанию).
+    /// </summary>
+    public NewGameRequest()
+    {
+    }
+
     /// <summary>
     /// Инициализирует экземпляр записи типа <see cref="NewGameRequest"/>.
     /// </summary>
     /// <param name="width">Ширина минного поля в количестве ячеек.</param>
     /// <param name="height">Высота минного поля в количестве ячеек.</param>
     /// <param name="minesCount">Количество заминированных ячеек в минном поле.</param>
-    internal NewGameRequest(byte width, byte height, ushort minesCount)
+    public NewGameRequest(byte width, byte height, ushort minesCount)
     {
         this.Width = width;
         this.Height = height;
@@ -25,15 +32,15 @@ internal record NewGameRequest
     /// <summary>
     /// Представляет параметр тела запроса для ширины минного поля.
     /// </summary>
-    internal byte Width { get; }
+    public byte Width { get; set; }
 
     /// <summary>
     /// Представляет параметр тела запроса для высоты минного поля.
     /// </summary>
-    internal byte Height { get; }
+    public byte Height { get; set; }
 
     /// <summary>
     /// Представляет параметр тела запроса для количества заминированных ячеек в минном поле.
     /// </summary>
-    internal ushort Mines_Count { get; }
+    public ushort Mines_Count { get; set; }
 }

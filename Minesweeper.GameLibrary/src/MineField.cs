@@ -60,6 +60,29 @@ public class MineField
     public ushort MinesCount { get; }
 
     /// <summary>
+    /// Получает список записей, содержащий информацию о ячейках строк минного поля.
+    /// </summary>
+    /// <returns>Список, содержащий значения ячеек всех строк текущего минного поля.</returns>
+    public List<FieldCellsRow> GetAllFieldCellsRows()
+    {
+        List<FieldCellsRow> fieldCellsRowsList = new ();
+        string[,] cells = this.GetAllFieldCellsAsHiddenElements();
+
+        for (byte row = 0; row < cells.GetLength(0); row++)
+        {
+            FieldCellsRow fieldCellsRow = new ();
+            for (byte col = 0; col < cells.GetLength(1); col++)
+            {
+                fieldCellsRow.Cells.Add(cells[row, col]);
+            }
+
+            fieldCellsRowsList.Add(fieldCellsRow);
+        }
+
+        return fieldCellsRowsList;
+    }
+
+    /// <summary>
     /// Получает массив значений всех ячеек текущего минного поля.
     /// </summary>
     /// <returns>Массив, содержащий значения всех ячеек текущего минного поля.</returns>

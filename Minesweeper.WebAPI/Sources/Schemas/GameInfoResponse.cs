@@ -9,13 +9,20 @@ using Minesweeper.GameLibrary;
 /// <summary>
 /// Представляет тело HTTP-ответа с обновленной информацией о ячейках минного поля текущей игровой партии.
 /// </summary>
-internal record GameInfoResponse
+public record GameInfoResponse
 {
+    /// <summary>
+    /// Инициализирует экземпляр записи типа <see cref="GameInfoResponse"/> (по умолчанию).
+    /// </summary>
+    public GameInfoResponse()
+    {
+    }
+
     /// <summary>
     /// Инициализирует экземпляр записи типа <see cref="GameInfoResponse"/>.
     /// </summary>
     /// <param name="game">Текущая игровая партия.</param>
-    internal GameInfoResponse(GameParty game)
+    public GameInfoResponse(GameParty game)
     {
         this.Game_ID = game.ID.ToString();
 
@@ -24,36 +31,36 @@ internal record GameInfoResponse
         this.Mines_Count = game.CurrentMineField.MinesCount;
 
         this.Completed = game.IsGameOver;
-        this.Field = game.CurrentMineField.GetAllFieldCells();
+        this.Field = game.CurrentMineField.GetAllFieldCellsRows();
     }
 
     /// <summary>
     /// Представляет параметр тела ответа для идентификатора игровой партии.
     /// </summary>
-    internal string Game_ID { get; }
+    public string Game_ID { get; set; }
 
     /// <summary>
     /// Представляет параметр тела ответа для ширины минного поля.
     /// </summary>
-    internal int Width { get; }
+    public int Width { get; set; }
 
     /// <summary>
     /// Представляет параметр тела ответа для высоты минного поля.
     /// </summary>
-    internal int Height { get; }
+    public int Height { get; set; }
 
     /// <summary>
     /// Представляет параметр тела ответа для количества заминированных ячеек в минном поле.
     /// </summary>
-    internal int Mines_Count { get; }
+    public int Mines_Count { get; set; }
 
     /// <summary>
     /// Представляет параметр тела ответа для статуса завершения игровой партии.
     /// </summary>
-    internal bool Completed { get; }
+    public bool Completed { get; set; }
 
     /// <summary>
     /// Представляет параметр тела ответа для содержимого минного поля.
     /// </summary>
-    internal string[,] Field { get; }
+    public List<FieldCellsRow> Field { get; set; }
 }
