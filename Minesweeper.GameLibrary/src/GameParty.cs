@@ -12,6 +12,8 @@ public class GameParty
     private static readonly Dictionary<string, GameParty> GamesHistory;
 
     private readonly ushort summaryEmptyCellsCount;
+    private readonly List<MineFieldCell> mineFieldCells;
+
     private ushort detectedEmptyCellsCount;
 
     static GameParty()
@@ -29,6 +31,8 @@ public class GameParty
         this.CurrentMineField = field;
 
         this.summaryEmptyCellsCount = CalculateSummaryEmptyCellsCount(field);
+        this.mineFieldCells = field.GetListOfAllFieldCells();
+
         this.detectedEmptyCellsCount = 0;
 
         this.IsGameOver = false;
@@ -50,6 +54,11 @@ public class GameParty
     /// Получает значение, отражающее статус завершения текущей игровой партии.
     /// </summary>
     public bool IsGameOver { get; private set; }
+
+    /// <summary>
+    /// Получает текущее состояние ячеек минного поля текущей игровой партии.
+    /// </summary>
+    public Dictionary<FieldCellPosition, string> CurrentMineFieldGameStatus { get; private set; }
 
     /// <summary>
     /// Получает сведения об игровой партии из глобальной истории игры по указанному идентификатору.
@@ -79,6 +88,10 @@ public class GameParty
         if (this.CurrentMineField.IsExplosiveFieldCell(customCellRow, customCellCol))
         {
             this.IsGameOver = true;
+
+            // неудачное завершение игры (взрыв) => все ячейки открываются, мины обозначаются буквой "X"
+
+            // обновить this.CurrentMineFieldGameStatus
         }
         else
         {
@@ -87,10 +100,19 @@ public class GameParty
             if (this.detectedEmptyCellsCount == this.summaryEmptyCellsCount)
             {
                 this.IsGameOver = true;
+
+                // успешное завершение игры (открыты все пустые ячейки) => все ячейки открываются, мины обозначаются буквой "M"
+
+                // обновить this.CurrentMineFieldGameStatus
             }
             else
             {
                 this.IsGameOver = false;
+
+                // 1. новая ячейка содержит 0 опасных соседей => откываются все смежные нулевые ячейки + смежные с ними числовые ячейки
+                // 2. новая ячейка содержит от 1 до 8 опасных соседей. => открывается только текущая ячейка
+
+                // обновить this.CurrentMineFieldGameStatus
             }
         }
     }
