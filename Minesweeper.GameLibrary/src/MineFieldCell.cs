@@ -22,9 +22,6 @@ public class MineFieldCell
 
     private const char NonActivatedFieldCellStatusSymbol = ' ';
 
-    private readonly bool isExplosiveCell;
-    private readonly byte countOfCellsWithMinesAround;
-
     private bool isActivatedFieldCell;
 
     /// <summary>
@@ -35,18 +32,27 @@ public class MineFieldCell
     /// <param name="countOfCellsWithMinesAround">Количество заминированных соседних ячеек.</param>
     public MineFieldCell(FieldCellPosition position, bool isExplosiveCell, byte countOfCellsWithMinesAround)
     {
-        this.isExplosiveCell = isExplosiveCell;
-        this.countOfCellsWithMinesAround = countOfCellsWithMinesAround;
-
         this.isActivatedFieldCell = false;
 
         this.Position = position;
+        this.IsExplosiveCell = isExplosiveCell;
+        this.CountOfCellsWithMinesAround = countOfCellsWithMinesAround;
     }
 
     /// <summary>
     /// Представляет позицию ячейки в минном поле.
     /// </summary>
     public FieldCellPosition Position { get; }
+
+    /// <summary>
+    /// Предоставляет информацию, является ли заминированной данная ячейка минного поля.
+    /// </summary>
+    public bool IsExplosiveCell { get; }
+
+    /// <summary>
+    /// Предоставляет информацию о количестве заминированных соседних ячеек, расположенных вокруг данной ячейки минного поля.
+    /// </summary>
+    public byte CountOfCellsWithMinesAround { get; }
 
     /// <summary>
     /// Представляет текущий игровой статус ячейки.
@@ -57,13 +63,13 @@ public class MineFieldCell
         {
             if (this.isActivatedFieldCell)
             {
-                if (this.isExplosiveCell)
+                if (this.IsExplosiveCell)
                 {
                     return ActivatedExplosiveFieldCellStatus;
                 }
                 else
                 {
-                    switch (this.countOfCellsWithMinesAround)
+                    switch (this.CountOfCellsWithMinesAround)
                     {
                         case 0:
                             return "0";
