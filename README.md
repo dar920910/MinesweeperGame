@@ -1,37 +1,49 @@
-# MinesweeperGame
+# Игра "Сапёр"
 
-This project is my implementation of the "Minesweeper" game.
+Данный проект реализует веб-сервер игры "Сапёр" на базе требований спецификации OpenAPI:
 
----
+:link: [Игра Сапёр (Minesweeper) | Swagger](https://minesweeper-test.studiotg.ru/swagger/#/)
 
-## Requirements
+Протестировать работу веб-сервера можно с помощью клиентского веб-приложения игры "Сапёр":
 
-todo
-
-## Implementation
-
-### About Projects
-
-- Minesweeper.GameLibrary
-- Minesweeper.GameLibrary.UnitTests
-- Minesweeper.WebAPI
+:link: [Сапёр (Minesweeper)](https://minesweeper-test.studiotg.ru/)
 
 ---
 
-## Build
+## Текущая Реализация
 
-todo
+### Структура Проекта
 
-## Launch
+- **Minesweeper.GameLibrary** - данный проект реализует библиотеку классов, применяемых в игре.
+- **Minesweeper.GameLibrary.UnitTests** - данный проект содержит модульные тесты для библиотеки классов Minesweeper.GameLibrary.
+- **Minesweeper.WebAPI** - данный проект реализует веб-службу ASP.NET Core Web API для игры "Сапёр".
 
-todo
+---
 
-## Test
+## Повторное Использование
 
-todo
+## Сборка, запуск и тестирование исходного кода проекта в локальной среде разработки
 
-## Deploy
+В локальной среде разработки вам следует использовать **.NET 7 SDK** и инструмент командной строки **dotnet**.
 
-todo
+Построить все проекты решения:
+
+    <username>@<hostname>:<project_work_directory>$ dotnet build
+
+Запустить все модульные тесты:
+
+    <username>@<hostname>:<project_work_directory>$  dotnet test
+
+Запустить веб-сервер игры "Сапёр":
+
+    <username>@<hostname>:<project_work_directory>$ cd ./Minesweeper.WebApi/
+
+    <username>@<hostname>:<project_work_directory>$ dotnet run -lp https
+
+## Сборка, запуск и тестирование исходного кода проекта в контейнере Docker
+
+1. Создайте HTTPS-сертификат для данного проекта с помощью сценария **Create-DevCert-HTTPS**.
+2. Разверните проект в контейнере Docker с помощью сценария **Execute-DockerBuild.ps1**.
+3. Запустите веб-сервер в контейнере Docker с помощью сценария **Execute-DockerRun.ps1**.
 
 ---
