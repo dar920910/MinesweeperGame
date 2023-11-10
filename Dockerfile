@@ -1,5 +1,7 @@
 FROM mcr.microsoft.com/dotnet/sdk:7.0-jammy
 WORKDIR /usr/local/src/MinesweeperGame
+COPY Minesweeper.GameLibrary/ Minesweeper.GameLibrary/
+COPY Minesweeper.GameLibrary.UnitTests/ Minesweeper.GameLibrary.UnitTests/
 COPY Minesweeper.WebAPI/ Minesweeper.WebAPI/
 RUN dotnet publish Minesweeper.WebAPI/Minesweeper.WebAPI.csproj --output "/usr/local/bin/MinesweeperGame/" --configuration "Release" --use-current-runtime --no-self-contained
 ENV ASPNETCORE_ENVIRONMENT=Production \
