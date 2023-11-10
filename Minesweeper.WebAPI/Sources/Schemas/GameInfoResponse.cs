@@ -31,7 +31,7 @@ public record GameInfoResponse
         this.Mines_Count = game.CurrentMineField.MinesCount;
 
         this.Completed = game.IsGameOver;
-        this.Field = game.CurrentMineField.GetAllFieldCellsRows();
+        this.Field = game.GetSummaryMineFieldGameStatus();
     }
 
     /// <summary>
@@ -62,5 +62,5 @@ public record GameInfoResponse
     /// <summary>
     /// Представляет параметр тела ответа для содержимого минного поля.
     /// </summary>
-    public List<FieldCellsRow> Field { get; set; }
+    public List<FieldCellsRowGameStatusView> Field { get; set; }
 }

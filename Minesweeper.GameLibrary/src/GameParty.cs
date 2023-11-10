@@ -81,6 +81,31 @@ public class GameParty
     }
 
     /// <summary>
+    /// Получает список записей, содержащих информацию о представлении игрового статуса ячеек в каждой строке минного поля.
+    /// </summary>
+    /// <returns>Список, содержащий значения игрового статуса ячеек в каждой строке текущего минного поля.</returns>
+    public List<FieldCellsRowGameStatusView> GetSummaryMineFieldGameStatus()
+    {
+        List<FieldCellsRowGameStatusView> fieldCellsRowGameStatusView = new ();
+
+        for (byte row = 0; row < this.CurrentMineField.Size.Height; row++)
+        {
+            FieldCellsRowGameStatusView fieldCellsRowGameStatus = new ();
+
+            for (byte col = 0; col < this.CurrentMineField.Size.Width; col++)
+            {
+                FieldCellPosition position = new (row, col);
+                string cellGameStatus = this.CurrentMineFieldGameStatus[position];
+                fieldCellsRowGameStatus.Cells.Add(cellGameStatus);
+            }
+
+            fieldCellsRowGameStatusView.Add(fieldCellsRowGameStatus);
+        }
+
+        return fieldCellsRowGameStatusView;
+    }
+
+    /// <summary>
     /// Сделать игровой ход с помощью указания координат ячейки минного поля.
     /// </summary>
     /// <param name="customCellRow">Номер строки ячейки, выбранной игроком на минном поле.</param>
