@@ -55,10 +55,23 @@ public class MinesweeperController : ControllerBase
     /// <returns>Результат выполнения запроса, содержащий тело ответа с информацией об измененном состоянии игровой партии.</returns>
     [HttpPost("turn")]
     [ProducesResponseType(200, Type = typeof(GameInfoResponse))]
-    internal GameInfoResponse MakeGameTurn([FromBody] GameTurnRequest gameTurnRequest)
+    [ProducesResponseType(400, Type = typeof(BadRequestResult))]
+    public IActionResult MakeGameTurn([FromBody] GameTurnRequest gameTurnRequest)
     {
+        if (gameTurnRequest == null)
+        {
+            return this.BadRequest();
+        }
+
         GameParty gameParty = GameParty.GetGamePartyByID(gameTurnRequest.Game_ID);
+
+        if (gameParty.IsGameOver)
+        {
+            return this.BadRequest();
+        }
+
         gameParty.MakeTurn(gameTurnRequest.Row, gameTurnRequest.Col);
-        return new GameInfoResponse(gameParty);
+
+        return this.Ok(new GameInfoResponse(gameParty));
     }
 }
